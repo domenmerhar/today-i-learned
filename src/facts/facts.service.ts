@@ -20,8 +20,8 @@ export class FactsService {
     return this.factsRepository.addVote(id, categoryDto);
   }
 
-  removeVote(id: number, category: string): unknown {
-    return this.factsRepository.removeVote(id, category);
+  removeVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
+    return this.factsRepository.removeVote(id, categoryDto);
   }
 
   remove(id: number) {

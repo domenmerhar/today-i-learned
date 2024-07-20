@@ -29,14 +29,19 @@ export class FactsRepository extends Repository<Fact> {
     return fact;
   }
 
+  async findFact(id: string): Promise<Fact> {
+    const fact = await this.findOneOrFail({ where: { id } });
+    if (!fact) throw new NotFoundException(`Fact with id ${id} not found`);
+
+    return fact;
+  }
+
   async findAll(): Promise<Fact[]> {
     return this.find();
   }
 
   async addVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
-    const fact = await this.findOneOrFail({ where: { id } });
-    if (!fact) throw new NotFoundException(`Fact with id ${id} not found`);
-
+    const fact = await this.findFact(id);
     fact[categoryDto.category] += 1;
 
     try {
@@ -48,8 +53,17 @@ export class FactsRepository extends Repository<Fact> {
     return fact;
   }
 
-  removeVote(id: number, category: string): unknown {
-    return `This action removes vote for fact #${id} ${category}`;
+  async removeVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
+    const fact = await this.findFact(id);
+    fact[categoryDto.category] -= 1;
+
+    try {
+      await this.save(fact);
+    } catch {
+      throw new InternalServerErrorException('Failed to save the vote');
+    }
+
+    return fact;
   }
 
   removeT(id: number) {

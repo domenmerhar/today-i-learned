@@ -33,8 +33,8 @@ export class FactsController {
   }
 
   @Patch(':id/remove-vote')
-  removeVote(@Param('id') id: string, @Query('category') category) {
-    return this.factsService.removeVote(+id, category);
+  removeVote(@Param('id') id: string, @Body() categoryDto: CategoryDto) {
+    return this.factsService.removeVote(id, categoryDto);
   }
 
   @Delete(':id')
