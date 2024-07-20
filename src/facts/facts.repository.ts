@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -6,7 +7,7 @@ import {
 import { DataSource, Repository } from 'typeorm';
 import { Fact } from './fact.entity';
 import { CreateFactDto } from './dto/create-fact.dto';
-import { CategoryDto } from './dto/category.dto';
+import { VoteEnum } from './vote.enum';
 
 @Injectable()
 export class FactsRepository extends Repository<Fact> {
@@ -44,9 +45,9 @@ export class FactsRepository extends Repository<Fact> {
     return this.find();
   }
 
-  async addVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
+  async addVote(id: string, vote: VoteEnum): Promise<Fact> {
     const fact = await this.findFact(id);
-    if (+categoryDto.category > 0) fact[categoryDto.category] += 1;
+    fact[vote] += 1;
 
     try {
       await this.save(fact);
@@ -57,9 +58,12 @@ export class FactsRepository extends Repository<Fact> {
     return fact;
   }
 
-  async removeVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
+  async removeVote(id: string, vote: VoteEnum): Promise<Fact> {
+    console.log({ id }, { vote });
     const fact = await this.findFact(id);
-    fact[categoryDto.category] -= 1;
+    if (fact[vote] > 0) throw new BadRequestException("Vote doesn't exist");
+
+    fact[vote] -= 1;
 
     try {
       await this.save(fact);
