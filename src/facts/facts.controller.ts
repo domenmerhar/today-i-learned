@@ -10,18 +10,19 @@ import {
 } from '@nestjs/common';
 import { FactsService } from './facts.service';
 import { CreateFactDto } from './dto/create-fact.dto';
+import { Fact } from './fact.entity';
 
 @Controller('facts')
 export class FactsController {
   constructor(private readonly factsService: FactsService) {}
 
   @Post()
-  create(@Body() createFactDto: CreateFactDto) {
-    return this.factsService.create(createFactDto);
+  createFact(@Body() createFactDto: CreateFactDto): Promise<Fact> {
+    return this.factsService.createFact(createFactDto);
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Fact[]> {
     return this.factsService.findAll();
   }
 
