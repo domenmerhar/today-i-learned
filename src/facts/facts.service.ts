@@ -24,7 +24,7 @@ export class FactsService {
     return this.factsRepository.removeVote(id, categoryDto);
   }
 
-  remove(id: number) {
-    return this.factsRepository.removeT(id);
+  removeFact(id: string): Promise<string> {
+    return this.factsRepository.removeFact(id);
   }
 }

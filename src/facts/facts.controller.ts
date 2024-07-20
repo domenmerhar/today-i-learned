@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
 } from '@nestjs/common';
 import { FactsService } from './facts.service';
 import { CreateFactDto } from './dto/create-fact.dto';
@@ -38,7 +37,7 @@ export class FactsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.factsService.remove(+id);
+  removeFact(@Param('id') id: string): Promise<string> {
+    return this.factsService.removeFact(id);
   }
 }

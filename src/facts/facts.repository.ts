@@ -66,7 +66,8 @@ export class FactsRepository extends Repository<Fact> {
     return fact;
   }
 
-  removeT(id: number) {
-    return `This action removes a #${id} fact`;
+  async removeFact(id: string): Promise<string> {
+    await this.delete({ id });
+    return 'Fact removed';
   }
 }
