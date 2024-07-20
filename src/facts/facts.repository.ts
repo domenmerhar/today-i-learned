@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Fact } from './fact.entity';
 import { CreateFactDto } from './dto/create-fact.dto';
+import { CategoryDto } from './dto/category.dto';
 
 @Injectable()
 export class FactsRepository extends Repository<Fact> {
@@ -28,8 +33,19 @@ export class FactsRepository extends Repository<Fact> {
     return this.find();
   }
 
-  addVote(id: number, category: string): unknown {
-    return `This action adds vote for fact #${id} ${category}`;
+  async addVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
+    const fact = await this.findOneOrFail({ where: { id } });
+    if (!fact) throw new NotFoundException(`Fact with id ${id} not found`);
+
+    fact[categoryDto.category] += 1;
+
+    try {
+      await this.save(fact);
+    } catch {
+      throw new InternalServerErrorException('Failed to save the vote');
+    }
+
+    return fact;
   }
 
   removeVote(id: number, category: string): unknown {

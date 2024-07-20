@@ -11,6 +11,7 @@ import {
 import { FactsService } from './facts.service';
 import { CreateFactDto } from './dto/create-fact.dto';
 import { Fact } from './fact.entity';
+import { CategoryDto } from './dto/category.dto';
 
 @Controller('facts')
 export class FactsController {
@@ -27,8 +28,8 @@ export class FactsController {
   }
 
   @Patch(':id/add-vote')
-  addVote(@Param('id') id: string, @Query('category') category) {
-    return this.factsService.addVote(+id, category);
+  addVote(@Param('id') id: string, @Body() categoryDto: CategoryDto) {
+    return this.factsService.addVote(id, categoryDto);
   }
 
   @Patch(':id/remove-vote')

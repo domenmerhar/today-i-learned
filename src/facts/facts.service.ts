@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateFactDto } from './dto/create-fact.dto';
 import { FactsRepository } from './facts.repository';
 import { Fact } from './fact.entity';
+import { CategoryDto } from './dto/category.dto';
 
 @Injectable()
 export class FactsService {
@@ -15,8 +16,8 @@ export class FactsService {
     return this.factsRepository.findAll();
   }
 
-  addVote(id: number, category: string): unknown {
-    return this.factsRepository.addVote(id, category);
+  addVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
+    return this.factsRepository.addVote(id, categoryDto);
   }
 
   removeVote(id: number, category: string): unknown {
