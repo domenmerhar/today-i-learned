@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { FactsService } from './facts.service';
 import { CreateFactDto } from './dto/create-fact.dto';
-import { UpdateFactDto } from './dto/update-fact.dto';
 
 @Controller('facts')
 export class FactsController {
@@ -17,14 +25,14 @@ export class FactsController {
     return this.factsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.factsService.findOne(+id);
+  @Patch(':id/add-vote')
+  addVote(@Param('id') id: string, @Query('category') category) {
+    return this.factsService.addVote(+id, category);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFactDto: UpdateFactDto) {
-    return this.factsService.update(+id, updateFactDto);
+  @Patch(':id/remove-vote')
+  removeVote(@Param('id') id: string, @Query('category') category) {
+    return this.factsService.removeVote(+id, category);
   }
 
   @Delete(':id')

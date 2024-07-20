@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFactDto } from './dto/create-fact.dto';
-import { UpdateFactDto } from './dto/update-fact.dto';
 
 @Injectable()
 export class FactsService {
@@ -12,12 +11,12 @@ export class FactsService {
     return `This action returns all facts`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fact`;
+  addVote(id: number, category: string): unknown {
+    return `This action adds vote for fact #${id} ${category}`;
   }
 
-  update(id: number, updateFactDto: UpdateFactDto) {
-    return `This action updates a #${id} fact`;
+  removeVote(id: number, category: string): unknown {
+    return `This action removes vote for fact #${id} ${category}`;
   }
 
   remove(id: number) {
