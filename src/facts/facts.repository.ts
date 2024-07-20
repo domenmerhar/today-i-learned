@@ -30,8 +30,12 @@ export class FactsRepository extends Repository<Fact> {
   }
 
   async findFact(id: string): Promise<Fact> {
-    const fact = await this.findOneOrFail({ where: { id } });
-    if (!fact) throw new NotFoundException(`Fact with id ${id} not found`);
+    let fact;
+    try {
+      fact = await this.findOneOrFail({ where: { id } });
+    } catch {
+      throw new NotFoundException(`Fact with id ${id} not found`);
+    }
 
     return fact;
   }
@@ -42,7 +46,7 @@ export class FactsRepository extends Repository<Fact> {
 
   async addVote(id: string, categoryDto: CategoryDto): Promise<Fact> {
     const fact = await this.findFact(id);
-    fact[categoryDto.category] += 1;
+    if (+categoryDto.category > 0) fact[categoryDto.category] += 1;
 
     try {
       await this.save(fact);
