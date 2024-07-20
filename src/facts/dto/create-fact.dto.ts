@@ -1,4 +1,4 @@
-import { CategoryEnum } from '../category.enum';
+import { CategoryType } from '../category.type';
 
 export class CreateFactDto {
   description: string;
@@ -7,13 +7,3 @@ export class CreateFactDto {
 
   category: CategoryType;
 }
-
-type CategoryType =
-  | CategoryEnum.TECHNOLOGY
-  | CategoryEnum.SCIENCE
-  | CategoryEnum.FINANCE
-  | CategoryEnum.SOCIETY
-  | CategoryEnum.ENTERTAINMENT
-  | CategoryEnum.HEALTH
-  | CategoryEnum.HISTORY
-  | CategoryEnum.NEWS;
