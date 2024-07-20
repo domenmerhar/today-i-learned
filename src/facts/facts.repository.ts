@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Fact } from './fact.entity';
 import { CreateFactDto } from './dto/create-fact.dto';
@@ -9,12 +9,23 @@ export class FactsRepository extends Repository<Fact> {
     super(Fact, dataSource.createEntityManager());
   }
 
-  createT(createFactDto: CreateFactDto) {
-    return 'This action adds a new fact';
+  async createFact(createFactDto: CreateFactDto): Promise<Fact> {
+    const { category, description, source } = createFactDto;
+
+    const fact = await this.save({
+      category: category,
+      description,
+      source,
+      likes: 0,
+      mindblownVotes: 0,
+      falseVotes: 0,
+    });
+
+    return fact;
   }
 
-  findAll() {
-    return `This action returns all facts`;
+  async findAll(): Promise<Fact[]> {
+    return this.find();
   }
 
   addVote(id: number, category: string): unknown {
