@@ -4,11 +4,13 @@ import { AppService } from './app.service';
 import { FactsModule } from './facts/facts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { configValidationSchema } from './config.schema';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
+      validationSchema: configValidationSchema,
     }),
     FactsModule,
     TypeOrmModule.forRootAsync({
