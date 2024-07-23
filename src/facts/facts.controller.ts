@@ -7,12 +7,15 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { FactsService } from './facts.service';
 import { CreateFactDto } from './dto/create-fact.dto';
 import { Fact } from './fact.entity';
 import { VoteEnum } from './vote.enum';
 import { VoteValidationPipe } from './pipes/vote.validator';
+import { CategoryType } from './category.type';
+import { CategoryValidationPippe } from './pipes/category.validator';
 
 @Controller('facts')
 export class FactsController {
@@ -24,8 +27,10 @@ export class FactsController {
   }
 
   @Get()
-  findAll(): Promise<Fact[]> {
-    return this.factsService.findAll();
+  findAll(
+    @Query('category', CategoryValidationPippe) category: CategoryType,
+  ): Promise<Fact[]> {
+    return this.factsService.findAll(category);
   }
 
   @Patch(':id/add-vote')

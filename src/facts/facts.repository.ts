@@ -8,6 +8,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Fact } from './fact.entity';
 import { CreateFactDto } from './dto/create-fact.dto';
 import { VoteEnum } from './vote.enum';
+import { CategoryType } from './category.type';
 
 @Injectable()
 export class FactsRepository extends Repository<Fact> {
@@ -41,7 +42,12 @@ export class FactsRepository extends Repository<Fact> {
     return fact;
   }
 
-  async findAll(): Promise<Fact[]> {
+  async findAll(category: CategoryType): Promise<Fact[]> {
+    if (category)
+      return this.find({
+        where: { category: category },
+      });
+
     return this.find();
   }
 
