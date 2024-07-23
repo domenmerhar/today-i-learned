@@ -3,6 +3,7 @@ import { CreateFactDto } from './dto/create-fact.dto';
 import { FactsRepository } from './facts.repository';
 import { Fact } from './fact.entity';
 import { VoteEnum } from './vote.enum';
+import { CategoryType } from './category.type';
 
 @Injectable()
 export class FactsService {
@@ -12,8 +13,8 @@ export class FactsService {
     return this.factsRepository.createFact(createFactDto);
   }
 
-  async findAll(): Promise<Fact[]> {
-    return this.factsRepository.findAll();
+  async findAll(category: CategoryType): Promise<Fact[]> {
+    return this.factsRepository.findAll(category);
   }
 
   addVote(id: string, vote: VoteEnum): Promise<Fact> {
