@@ -6,8 +6,6 @@ export class VoteValidationPipe implements PipeTransform {
   readonly allowedStatuses = Object.values(VoteEnum);
 
   transform(value: string) {
-    value = value.toLowerCase();
-
     if (!this.isStatusValid(value)) {
       throw new BadRequestException(
         `${value} should be one of the following values: ${this.allowedStatuses.join(', ')}`,
