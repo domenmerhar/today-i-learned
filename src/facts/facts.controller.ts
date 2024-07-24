@@ -26,6 +26,11 @@ export class FactsController {
     return this.factsService.createFact(createFactDto);
   }
 
+  @Get(':id')
+  findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Fact> {
+    return this.factsService.findOne(id);
+  }
+
   @Get()
   findAll(
     @Query('category', CategoryValidationPippe) category: CategoryType,

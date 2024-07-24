@@ -17,6 +17,10 @@ export class FactsService {
     return this.factsRepository.findAll(category);
   }
 
+  async findOne(id: string): Promise<Fact> {
+    return this.factsRepository.findFact(id);
+  }
+
   addVote(id: string, vote: VoteEnum): Promise<Fact> {
     return this.factsRepository.addVote(id, vote);
   }

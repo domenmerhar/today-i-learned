@@ -67,7 +67,8 @@ export class FactsRepository extends Repository<Fact> {
   async removeVote(id: string, vote: VoteEnum): Promise<Fact> {
     console.log({ id }, { vote });
     const fact = await this.findFact(id);
-    if (fact[vote] > 0) throw new BadRequestException("Vote doesn't exist");
+
+    if (fact[vote] === 0) throw new BadRequestException("Vote doesn't exist");
 
     fact[vote] -= 1;
 
