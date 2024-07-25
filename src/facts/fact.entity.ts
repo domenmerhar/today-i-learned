@@ -6,7 +6,7 @@ export class Fact {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
+  @Column('text', { unique: true })
   description: string;
 
   @Column()
